@@ -1,0 +1,1 @@
+MODOBJFILES= ch_reg_neuron.o currentGauss.o izhi2003a.o izhi2007b.o izhi2007bmod.o tmgsyn.o vecevent.o
