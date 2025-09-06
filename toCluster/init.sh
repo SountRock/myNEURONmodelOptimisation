@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=testHuber
-#SBATCH --partition=normal
+#SBATCH --job-name=testNPHuber
+#SBATCH --partition=epic
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=10
 #SBATCH --time=7-00:00:00
-#SBATCH --output=/home/sagalajev_lab/mathematical_models/SCS_mods/testHuber/output.txt
-#SBATCH --error=/home/sagalajev_lab/mathematical_models/SCS_mods/testHuber/error.txt
+#SBATCH --output=/home/sagalajev_lab/mathematical_models/SCS_mods/testNPressHuber/output.txt
+#SBATCH --error=/home/sagalajev_lab/mathematical_models/SCS_mods/testNPressHuber/error.txt
 
 echo "=== SLURM JOB STARTED ==="
 echo "Date      : $(date '+%d-%m-%Y %H:%M:%S')"
@@ -27,4 +27,4 @@ echo "DEAP      : $(python -c 'import deap; print(deap.__version__)')"
 echo "Pymoo      : $(python -c 'import pymoo; print(pymoo.__version__)')"
 echo
 
-python /home/sagalajev_lab/mathematical_models/SCS_mods/testHuber/optimModel.py
+python /home/sagalajev_lab/mathematical_models/SCS_mods/testNPressHuber/optimModel.py

@@ -853,7 +853,11 @@ def megaTargetFuncOnlySyn(t_matrix,
     for PSDCstatus in PSDCisOff:
         freqResponse_temp = []
         for f in t_matrix[5]:
+            '''
             with open(f'inputs/{f}mN.json', 'r') as json_file:
+                spikes = json.load(json_file)
+            '''
+            with open(f'inputs/newPressureInputs/{f}mN80.json', 'r') as json_file:
                 spikes = json.load(json_file)
 
             if (PSDCstatus):
@@ -866,7 +870,8 @@ def megaTargetFuncOnlySyn(t_matrix,
                 netParams.connParams = connParamsPSDCoff
 
             simConfig = specs.SimConfig()      
-            simConfig.duration = 600         
+            #simConfig.duration = 600  
+            simConfig.duration = 80_000          
             simConfig.dt = 0.025 
             simConfig.printPopAvgRates = [ 0, simConfig.duration ]  
 
@@ -923,6 +928,7 @@ with open('characteristics/freq_freq_brainstem.json', 'r') as json_file:
 y_true_matrix.append(y_values)
 t_matrix.append(x_values)
 
+'''
 with open('characteristics/mN5_30_80.json', 'r') as json_file:
     y_true_mN5_30_80 = json.load(json_file)
     y_values = list(y_true_mN5_30_80['y'])
@@ -930,9 +936,19 @@ with open('characteristics/mN5_30_80.json', 'r') as json_file:
     y_true_matrix.append(y_values)
     t_matrix.append(x_values)
 print(f'y_true_mN5_30_80={y_true_mN5_30_80}')
+'''
+
+with open('characteristics/mN1_300.json', 'r') as json_file:
+    y_true_mN1_300 = json.load(json_file)
+    y_values = list(y_true_mN1_300['y'])
+    x_values = list(y_true_mN1_300['x'])
+    y_true_matrix.append(y_values)
+    t_matrix.append(x_values)
+print(f'y_true_mN1_300={y_true_mN1_300}')
 
 print(y_true_matrix)
 print(t_matrix)
+
 #True values targer funcs------------------------------------------------------------------------
 
 '''
@@ -1070,6 +1086,7 @@ print(len(y_true_matrix))
 print('======================================')
 print(ys)
 #'''
+#pscp -r C:\masterModel\toCluster\optimisationMaster\toCluster\* chupov@172.22.0.1:/home/sagalajev_lab/mathematical_models/SCS_mods/testNPressHuber
 
 #'''
 #param_names, results, pareto = run_nsga3_optimization_with_init_values2(
