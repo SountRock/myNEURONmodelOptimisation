@@ -791,7 +791,7 @@ def megaTargetFuncOnlySyn(t_matrix,
     #Симуляция с PSDC слоями
     ys_SPC_all= [] #Spike per cycle
     ys_freq_all= [] #Freq output
-    ys_PLP= [] #Phase Locking Probability
+    #ys_PLP= [] #Phase Locking Probability
     netParams.connParams = connParamsAllPathActive
     for f in t_matrix[3]:
         with open(f'inputs/{f}HzPattern.json', 'r') as json_file:
@@ -800,7 +800,7 @@ def megaTargetFuncOnlySyn(t_matrix,
         netParams.popParams['stimRW'] = {'cellModel': 'VecStim', 'numCells': len(maskRightWays), 'spkTimes': spikes}
 
         simConfig = specs.SimConfig()      
-        simConfig.duration = 1000         
+        simConfig.duration = 500         
         simConfig.dt = 0.025 
         simConfig.printPopAvgRates = [ 0, simConfig.duration ]  
 
@@ -815,8 +815,8 @@ def megaTargetFuncOnlySyn(t_matrix,
         ys_freq_all.append(output_freq) 
         if f > 100:
             #PLProb = compute_plp2(output_spkt_times, spikes[4])
-            PLProb, _ = compute_plp(output_spkt_times, spikes[4])
-            ys_PLP.append(PLProb)
+            #PLProb, _ = compute_plp(output_spkt_times, spikes[4])
+            #ys_PLP.append(PLProb)
 
             y = output_freq / f
             ys_SPC_all.append(y)
@@ -831,7 +831,7 @@ def megaTargetFuncOnlySyn(t_matrix,
         netParams.popParams['stimRW'] = {'cellModel': 'VecStim', 'numCells': len(maskRightWays), 'spkTimes': spikes}
 
         simConfig = specs.SimConfig()      
-        simConfig.duration = 1000         
+        simConfig.duration = 500         
         simConfig.dt = 0.025 
         simConfig.printPopAvgRates = [ 0, simConfig.duration ]  
 
@@ -871,7 +871,7 @@ def megaTargetFuncOnlySyn(t_matrix,
 
             simConfig = specs.SimConfig()      
             #simConfig.duration = 600  
-            simConfig.duration = 80_000          
+            simConfig.duration = 20_000          
             simConfig.dt = 0.025 
             simConfig.printPopAvgRates = [ 0, simConfig.duration ]  
 
@@ -889,7 +889,7 @@ def megaTargetFuncOnlySyn(t_matrix,
 
     y_final = [
         ys_SPC_all, ys_SPC_offPSDC, 
-        ys_PLP, 
+        #ys_PLP, 
         ys_freq_all, ys_freq_offPSDC, 
         ys_pressure.tolist()
     ]
@@ -912,12 +912,14 @@ print(f'y_true_freq_stim_SPC_output={y_true_freq_stim_SPC_outputAllActive}')
 y_true_matrix.append(y_values)
 t_matrix.append(x_values)
 
+'''
 with open('characteristics/freq_PLP_brainstem.json', 'r') as json_file:
     y_true_freq_stim_PLP_outputAllActive = json.load(json_file)
     y_values = list(y_true_freq_stim_PLP_outputAllActive['y'])
     x_values = list(y_true_freq_stim_PLP_outputAllActive['x'])
     y_true_matrix.append(y_values)
     t_matrix.append(x_values)
+'''
 
 with open('characteristics/freq_freq_brainstem.json', 'r') as json_file:
     y_true_freq_freq_outputAllActive = json.load(json_file)
@@ -1065,7 +1067,8 @@ param_bounds = {
     'tau_facilInh': (2, 1000.0),
 }
 
-with open('initParams/init_7_osyn.json', 'r') as json_file:
+#with open('initParams/init_7_osyn.json', 'r') as json_file:
+with open('initParams/init_N2_osyn.json', 'r') as json_file:
     init_params = json.load(json_file)
 
 init_params['tau_facilExcLoop'] = 100
@@ -1086,7 +1089,7 @@ print(len(y_true_matrix))
 print('======================================')
 print(ys)
 #'''
-#pscp -r C:\masterModel\toCluster\optimisationMaster\toCluster\* chupov@172.22.0.1:/home/sagalajev_lab/mathematical_models/SCS_mods/testNPressHuber
+#pscp -r C:\masterModel\toCluster\optimisationMaster\toCluster\* chupov@172.22.0.1:/home/sagalajev_lab/mathematical_models/SCS_mods/planC
 
 #'''
 #param_names, results, pareto = run_nsga3_optimization_with_init_values2(
@@ -1095,8 +1098,8 @@ param_names, results, pareto = run_nsga3_optimization_with_init_values2_min_max_
         t_matrix=t_matrix,
         y_true_matrix=y_true_matrix,
         param_bounds=param_bounds,
-        n_gen=100,
-        pop_size=100,
+        n_gen=200,
+        pop_size=300,
         log_path="optimisation_log.csv",
         checkpoint_path='save_state_optim.json', 
         checkpoint_every=5,
@@ -1104,7 +1107,7 @@ param_names, results, pareto = run_nsga3_optimization_with_init_values2_min_max_
         #priorities=[1, 1.5, 1, 1.5, 2],
         init_params=init_params, 
         delta_init_params=0.01,
-        loss_func=huber
+        #loss_func=huber
 )
 #'''
 
